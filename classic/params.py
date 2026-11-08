@@ -4,7 +4,7 @@ import numpy as np
 screen_width = 1200 # in pixels
 screen_height = 900 # in pixels
 screen_bg = (128, 128, 128)
-flip_time = 100 # In milliseconds
+flip_time = 500 # In milliseconds
 
 # Image parameters
 img_width = 4

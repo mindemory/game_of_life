@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+
+# OS
+.DS_Store
+
+# Experiment scratch output (quick smoke-test runs and logs)
+results/*_quick.*
+results/logs/
+figures/*_quick.png
+figures/*_sample.png
+results/*_sample.*
+
+# Large renders (regenerate with experiments/make_media.py)
+media/*.mp4
+media/frames/
+
+# Viewer screenshots
+lifelab_*.png
