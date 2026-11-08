@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lifelab"
+version = "1.0.0"
+description = "A small laboratory for Conway's Game of Life: fast simulation, pattern tools, and reproducible experiments."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Mrugank Dake" }]
+dependencies = ["numpy>=1.22", "scipy>=1.7", "matplotlib>=3.4", "pillow>=8"]
+
+[project.optional-dependencies]
+viewer = ["pygame>=2.1"]
+video = ["imageio-ffmpeg>=0.4"]
+dev = ["pytest>=6"]
+
+[project.scripts]
+lifelab = "lifelab.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/mindemory/game_of_life"
+
+[tool.setuptools]
+packages = ["lifelab"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

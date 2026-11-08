@@ -1,0 +1,30 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Unit tests
+        run: pytest -q
+      - name: Smoke-test the experiments
+        working-directory: experiments
+        env:
+          LIFELAB_WORKERS: "2"
+        run: |
+          python soups.py --quick
+          python asynchrony.py --quick
+          python avalanches.py --quick
