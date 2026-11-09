@@ -125,7 +125,8 @@ def plot_soups(d, path):
     ax.plot(L, med, color=BLUE, marker="o")
     slope, icpt = np.polyfit(np.log(L), np.log(med), 1)
     ax.plot(L, np.exp(icpt) * L ** slope, color=MUTED, lw=1, ls="--")
-    ax.text(L[2] * 1.15, np.exp(icpt) * L[2] ** slope * 0.62, f"$\\propto L^{{{slope:.2f}}}$", color=INK2,
+    k = len(L) // 2  # label the middle size (64 in the full run; the quick run has only two sizes)
+    ax.text(L[k] * 1.15, np.exp(icpt) * L[k] ** slope * 0.62, f"$\\propto L^{{{slope:.2f}}}$", color=INK2,
             fontsize=10, path_effects=HALO)
     ax.set_xscale("log", base=2)
     ax.set_yscale("log")
