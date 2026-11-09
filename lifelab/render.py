@@ -112,6 +112,21 @@ def find_ffmpeg() -> Optional[str]:
         return None
 
 
+def _h264_args(exe: str, crf: int) -> list[str]:
+    """Encoder flags for the best H.264 encoder this ffmpeg build offers."""
+    try:
+        encoders = subprocess.run([exe, "-hide_banner", "-encoders"], capture_output=True, text=True).stdout
+    except OSError:  # pragma: no cover
+        encoders = ""
+    if "libx264" in encoders:
+        return ["-c:v", "libx264", "-crf", str(crf), "-preset", "slow"]
+    if "h264_videotoolbox" in encoders:  # macOS hardware encoder
+        return ["-c:v", "h264_videotoolbox", "-b:v", "8M"]
+    if "libopenh264" in encoders:
+        return ["-c:v", "libopenh264", "-b:v", "8M"]
+    return ["-c:v", "mpeg4", "-q:v", "2"]
+
+
 def save_mp4(frames: Iterable[np.ndarray] | Iterator[np.ndarray], path: str | Path, fps: int = 30,
              theme: str = "dark", trail: float = 0.8, scale: int = 4, crf: int = 18,
              rgb_frames: bool = False) -> Path:
@@ -130,8 +145,7 @@ def save_mp4(frames: Iterable[np.ndarray] | Iterator[np.ndarray], path: str | Pa
                 pad_h, pad_w = h % 2, w % 2
                 cmd = [exe, "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24",
                        "-s", f"{w + pad_w}x{h + pad_h}", "-r", str(fps), "-i", "-",
-                       "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", str(crf),
-                       "-preset", "slow", "-movflags", "+faststart", str(path)]
+                       *_h264_args(exe, crf), "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(path)]
                 proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
             if pad_h or pad_w:
                 img = np.pad(img, ((0, pad_h), (0, pad_w), (0, 0)), mode="edge")
