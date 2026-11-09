@@ -123,8 +123,9 @@ print(Rule.parse("B36/S23").langton_lambda)
 
 ## Reproducing the experiments
 
-Each script saves its numbers to `results/` and its figure to `figures/`. `--quick` runs a tiny version,
-and `--plot` redraws from saved results. Times are for an 8-core laptop.
+The four experiment scripts save their numbers to `results/` and their figures to `figures/`, and `--plot`
+redraws a figure from saved results. For a tiny test run, use `--quick`, or `--sample 2000` for
+`rule_space.py`, which surveys 2,000 random rules instead of all of them. Times are for an 8-core laptop.
 
 | Script | Question | Time |
 | --- | --- | --- |
