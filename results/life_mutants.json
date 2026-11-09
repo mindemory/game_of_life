@@ -1,0 +1,182 @@
+[
+  {
+    "label": "Life",
+    "rule": "B3/S23",
+    "name": "life",
+    "cls": "oscillates",
+    "transient": 2564,
+    "period": 2,
+    "density": 0.03472900390625,
+    "activity": 0.009521484375
+  },
+  {
+    "label": "+B1",
+    "rule": "B13/S23",
+    "name": null,
+    "cls": "never settles",
+    "transient": -1,
+    "period": -1,
+    "density": 0.3867015838623047,
+    "activity": 0.4299287796020508
+  },
+  {
+    "label": "+B2",
+    "rule": "B23/S23",
+    "name": null,
+    "cls": "never settles",
+    "transient": -1,
+    "period": -1,
+    "density": 0.3834257125854492,
+    "activity": 0.4883556365966797
+  },
+  {
+    "label": "-B3",
+    "rule": "B/S23",
+    "name": null,
+    "cls": "freezes",
+    "transient": 10,
+    "period": 1,
+    "density": 0.0469970703125,
+    "activity": 0.0
+  },
+  {
+    "label": "+B4",
+    "rule": "B34/S23",
+    "name": null,
+    "cls": "never settles",
+    "transient": -1,
+    "period": -1,
+    "density": 0.3572559356689453,
+    "activity": 0.4415740966796875
+  },
+  {
+    "label": "+B5",
+    "rule": "B35/S23",
+    "name": null,
+    "cls": "oscillates",
+    "transient": 315,
+    "period": 2,
+    "density": 0.01361083984375,
+    "activity": 0.00830078125
+  },
+  {
+    "label": "+B6",
+    "rule": "B36/S23",
+    "name": "highlife",
+    "cls": "oscillates",
+    "transient": 1558,
+    "period": 2,
+    "density": 0.021240234375,
+    "activity": 0.00146484375
+  },
+  {
+    "label": "+B7",
+    "rule": "B37/S23",
+    "name": "drylife",
+    "cls": "never settles",
+    "transient": -1,
+    "period": -1,
+    "density": 0.056214332580566406,
+    "activity": 0.039381980895996094
+  },
+  {
+    "label": "+B8",
+    "rule": "B38/S23",
+    "name": null,
+    "cls": "oscillates",
+    "transient": 1506,
+    "period": 2,
+    "density": 0.0244140625,
+    "activity": 0.004150390625
+  },
+  {
+    "label": "+S0",
+    "rule": "B3/S023",
+    "name": null,
+    "cls": "never settles",
+    "transient": -1,
+    "period": -1,
+    "density": 0.15702056884765625,
+    "activity": 0.12800121307373047
+  },
+  {
+    "label": "+S1",
+    "rule": "B3/S123",
+    "name": null,
+    "cls": "never settles",
+    "transient": -1,
+    "period": -1,
+    "density": 0.32866573333740234,
+    "activity": 0.27174854278564453
+  },
+  {
+    "label": "-S2",
+    "rule": "B3/S3",
+    "name": null,
+    "cls": "freezes",
+    "transient": 13,
+    "period": 1,
+    "density": 0.000732421875,
+    "activity": 0.0
+  },
+  {
+    "label": "-S3",
+    "rule": "B3/S2",
+    "name": null,
+    "cls": "oscillates",
+    "transient": 17,
+    "period": 2,
+    "density": 0.0040283203125,
+    "activity": 0.00341796875
+  },
+  {
+    "label": "+S4",
+    "rule": "B3/S234",
+    "name": null,
+    "cls": "oscillates",
+    "transient": 178,
+    "period": 84,
+    "density": 0.5073108673095703,
+    "activity": 0.002201080322265625
+  },
+  {
+    "label": "+S5",
+    "rule": "B3/S235",
+    "name": null,
+    "cls": "never settles",
+    "transient": -1,
+    "period": -1,
+    "density": 0.39406681060791016,
+    "activity": 0.29624462127685547
+  },
+  {
+    "label": "+S6",
+    "rule": "B3/S236",
+    "name": null,
+    "cls": "never settles",
+    "transient": -1,
+    "period": -1,
+    "density": 0.2592439651489258,
+    "activity": 0.22684001922607422
+  },
+  {
+    "label": "+S7",
+    "rule": "B3/S237",
+    "name": null,
+    "cls": "never settles",
+    "transient": -1,
+    "period": -1,
+    "density": 0.09116840362548828,
+    "activity": 0.06935691833496094
+  },
+  {
+    "label": "+S8",
+    "rule": "B3/S238",
+    "name": null,
+    "cls": "oscillates",
+    "transient": 2820,
+    "period": 6,
+    "density": 0.032328287760416664,
+    "activity": 0.013834635416666666
+  }
+]

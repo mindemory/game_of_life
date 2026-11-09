@@ -1,0 +1,678 @@
+{
+  "n_rules": 131072,
+  "size": 64,
+  "density": 0.35,
+  "max_steps": 2000,
+  "seed": 2026,
+  "long_transient": 300,
+  "classes": {
+    "dies out": 1646,
+    "freezes": 14515,
+    "oscillates": 22614,
+    "never settles": 92297
+  },
+  "long_lived": 2003,
+  "long_lived_sparse": 397,
+  "life": {
+    "transient": 697,
+    "period": 2,
+    "density": 0.025390625,
+    "activity": 0.0068359375,
+    "lam": 0.2734375,
+    "cls": "oscillates",
+    "transient_rank_pct": 98.13023855577046
+  },
+  "longest_sparse": [
+    {
+      "rule": "B3478/S148",
+      "transient": 1994,
+      "period": 2,
+      "density": 0.003662109375
+    },
+    {
+      "rule": "B37/S23",
+      "transient": 1988,
+      "period": 2,
+      "density": 0.0185546875
+    },
+    {
+      "rule": "B35/S1358",
+      "transient": 1967,
+      "period": 4,
+      "density": 0.0115966796875
+    },
+    {
+      "rule": "B3467/S038",
+      "transient": 1938,
+      "period": 12,
+      "density": 0.020263671875
+    },
+    {
+      "rule": "B4578/S23567",
+      "transient": 1868,
+      "period": 2,
+      "density": 0.0048828125
+    },
+    {
+      "rule": "B357/S0347",
+      "transient": 1866,
+      "period": 2,
+      "density": 0.0087890625
+    },
+    {
+      "rule": "B37/S01358",
+      "transient": 1827,
+      "period": 4,
+      "density": 0.037353515625
+    },
+    {
+      "rule": "B357/S238",
+      "transient": 1817,
+      "period": 2,
+      "density": 0.00927734375
+    },
+    {
+      "rule": "B45678/S013468",
+      "transient": 1789,
+      "period": 1,
+      "density": 0.0048828125
+    },
+    {
+      "rule": "B378/S01358",
+      "transient": 1787,
+      "period": 4,
+      "density": 0.0458984375
+    },
+    {
+      "rule": "B37/S013578",
+      "transient": 1782,
+      "period": 2,
+      "density": 0.036865234375
+    },
+    {
+      "rule": "B4567/S013458",
+      "transient": 1751,
+      "period": 1,
+      "density": 0.010009765625
+    },
+    {
+      "rule": "B378/S013578",
+      "transient": 1747,
+      "period": 2,
+      "density": 0.038330078125
+    },
+    {
+      "rule": "B36/S125",
+      "transient": 1731,
+      "period": 4,
+      "density": 0.0223388671875
+    },
+    {
+      "rule": "B4578/S02346",
+      "transient": 1710,
+      "period": 2,
+      "density": 0.025634765625
+    },
+    {
+      "rule": "B45678/S23568",
+      "transient": 1671,
+      "period": 2,
+      "density": 0.007080078125
+    },
+    {
+      "rule": "B457/S23567",
+      "transient": 1666,
+      "period": 4,
+      "density": 0.0086669921875
+    },
+    {
+      "rule": "B3578/S24678",
+      "transient": 1658,
+      "period": 4,
+      "density": 0.001220703125
+    },
+    {
+      "rule": "B457/S123578",
+      "transient": 1649,
+      "period": 4,
+      "density": 0.01226806640625
+    },
+    {
+      "rule": "B3567/S1367",
+      "transient": 1647,
+      "period": 1,
+      "density": 0.00390625
+    },
+    {
+      "rule": "B45/S024568",
+      "transient": 1619,
+      "period": 1,
+      "density": 0.005859375
+    },
+    {
+      "rule": "B4678/S13457",
+      "transient": 1602,
+      "period": 1,
+      "density": 0.01025390625
+    },
+    {
+      "rule": "B358/S013",
+      "transient": 1580,
+      "period": 2,
+      "density": 0.053466796875
+    },
+    {
+      "rule": "B357/S24678",
+      "transient": 1580,
+      "period": 4,
+      "density": 0.0029296875
+    },
+    {
+      "rule": "B34678/S03",
+      "transient": 1565,
+      "period": 12,
+      "density": 0.015869140625
+    },
+    {
+      "rule": "B46/S123567",
+      "transient": 1548,
+      "period": 2,
+      "density": 0.0128173828125
+    },
+    {
+      "rule": "B3457/S18",
+      "transient": 1545,
+      "period": 2,
+      "density": 0.0029296875
+    },
+    {
+      "rule": "B34/S1478",
+      "transient": 1537,
+      "period": 1,
+      "density": 0.00439453125
+    },
+    {
+      "rule": "B347/S01678",
+      "transient": 1519,
+      "period": 4,
+      "density": 0.04833984375
+    },
+    {
+      "rule": "B4578/S024568",
+      "transient": 1517,
+      "period": 1,
+      "density": 0.0078125
+    },
+    {
+      "rule": "B38/S23",
+      "transient": 1513,
+      "period": 2,
+      "density": 0.031005859375
+    },
+    {
+      "rule": "B4578/S123578",
+      "transient": 1502,
+      "period": 2,
+      "density": 0.021240234375
+    },
+    {
+      "rule": "B35678/S247",
+      "transient": 1495,
+      "period": 4,
+      "density": 0.0037841796875
+    },
+    {
+      "rule": "B37/S0135",
+      "transient": 1494,
+      "period": 4,
+      "density": 0.0413818359375
+    },
+    {
+      "rule": "B467/S013457",
+      "transient": 1483,
+      "period": 1,
+      "density": 0.0048828125
+    },
+    {
+      "rule": "B3478/S0167",
+      "transient": 1478,
+      "period": 4,
+      "density": 0.0460205078125
+    },
+    {
+      "rule": "B36/S238",
+      "transient": 1455,
+      "period": 2,
+      "density": 0.015869140625
+    },
+    {
+      "rule": "B358/S135",
+      "transient": 1447,
+      "period": 2,
+      "density": 0.00634765625
+    },
+    {
+      "rule": "B45678/S012378",
+      "transient": 1429,
+      "period": 4,
+      "density": 0.0819091796875
+    },
+    {
+      "rule": "B467/S123567",
+      "transient": 1424,
+      "period": 6,
+      "density": 0.011149088541666666
+    }
+  ],
+  "named": {
+    "life": {
+      "rule": "B3/S23",
+      "cls": "oscillates",
+      "transient": 697,
+      "period": 2,
+      "density": 0.025390625,
+      "activity": 0.0068359375,
+      "lam": 0.2734375
+    },
+    "highlife": {
+      "rule": "B36/S23",
+      "cls": "oscillates",
+      "transient": 683,
+      "period": 2,
+      "density": 0.016357421875,
+      "activity": 0.001953125,
+      "lam": 0.328125
+    },
+    "day_and_night": {
+      "rule": "B3678/S34678",
+      "cls": "oscillates",
+      "transient": 267,
+      "period": 16,
+      "density": 0.00384521484375,
+      "activity": 0.0029296875,
+      "lam": 0.5
+    },
+    "seeds": {
+      "rule": "B2/S",
+      "cls": "never settles",
+      "transient": -1,
+      "period": -1,
+      "density": 0.21003341674804688,
+      "activity": 0.4201545715332031,
+      "lam": 0.0546875
+    },
+    "maze": {
+      "rule": "B3/S12345",
+      "cls": "freezes",
+      "transient": 11,
+      "period": 1,
+      "density": 0.555419921875,
+      "activity": 0.0,
+      "lam": 0.53515625
+    },
+    "mazectric": {
+      "rule": "B3/S1234",
+      "cls": "oscillates",
+      "transient": 34,
+      "period": 3,
+      "density": 0.5001627604166666,
+      "activity": 0.0006510416666666666,
+      "lam": 0.42578125
+    },
+    "coral": {
+      "rule": "B3/S45678",
+      "cls": "oscillates",
+      "transient": 468,
+      "period": 660,
+      "density": 0.8489532470703125,
+      "activity": 0.0050048828125,
+      "lam": 0.427734375
+    },
+    "replicator": {
+      "rule": "B1357/S1357",
+      "cls": "dies out",
+      "transient": 32,
+      "period": 1,
+      "density": 0.0,
+      "activity": 0.0,
+      "lam": 0.5
+    },
+    "life_without_death": {
+      "rule": "B3/S012345678",
+      "cls": "freezes",
+      "transient": 7,
+      "period": 1,
+      "density": 0.654296875,
+      "activity": 0.0,
+      "lam": 0.609375
+    },
+    "diamoeba": {
+      "rule": "B35678/S5678",
+      "cls": "oscillates",
+      "transient": 18,
+      "period": 2,
+      "density": 0.001708984375,
+      "activity": 0.00341796875,
+      "lam": 0.47265625
+    },
+    "2x2": {
+      "rule": "B36/S125",
+      "cls": "oscillates",
+      "transient": 1731,
+      "period": 4,
+      "density": 0.0223388671875,
+      "activity": 0.00146484375,
+      "lam": 0.34375
+    },
+    "move": {
+      "rule": "B368/S245",
+      "cls": "oscillates",
+      "transient": 137,
+      "period": 2,
+      "density": 0.001953125,
+      "activity": 0.0029296875,
+      "lam": 0.466796875
+    },
+    "anneal": {
+      "rule": "B4678/S35678",
+      "cls": "freezes",
+      "transient": 32,
+      "period": 1,
+      "density": 0.0029296875,
+      "activity": 0.0,
+      "lam": 0.5
+    },
+    "34_life": {
+      "rule": "B34/S34",
+      "cls": "never settles",
+      "transient": -1,
+      "period": -1,
+      "density": 0.425933837890625,
+      "activity": 0.45951080322265625,
+      "lam": 0.4921875
+    },
+    "long_life": {
+      "rule": "B345/S5",
+      "cls": "never settles",
+      "transient": -1,
+      "period": -1,
+      "density": 0.3274421691894531,
+      "activity": 0.6533279418945312,
+      "lam": 0.46484375
+    },
+    "amoeba": {
+      "rule": "B357/S1358",
+      "cls": "never settles",
+      "transient": -1,
+      "period": -1,
+      "density": 0.40926361083984375,
+      "activity": 0.4251899719238281,
+      "lam": 0.470703125
+    },
+    "pseudo_life": {
+      "rule": "B357/S238",
+      "cls": "oscillates",
+      "transient": 1817,
+      "period": 2,
+      "density": 0.00927734375,
+      "activity": 0.009765625,
+      "lam": 0.400390625
+    },
+    "drylife": {
+      "rule": "B37/S23",
+      "cls": "oscillates",
+      "transient": 1988,
+      "period": 2,
+      "density": 0.0185546875,
+      "activity": 0.001953125,
+      "lam": 0.2890625
+    },
+    "stains": {
+      "rule": "B3678/S235678",
+      "cls": "freezes",
+      "transient": 24,
+      "period": 1,
+      "density": 0.987060546875,
+      "activity": 0.0,
+      "lam": 0.52734375
+    },
+    "coagulations": {
+      "rule": "B378/S235678",
+      "cls": "oscillates",
+      "transient": 1141,
+      "period": 6,
+      "density": 0.9269205729166666,
+      "activity": 0.0011393229166666667,
+      "lam": 0.47265625
+    },
+    "walled_cities": {
+      "rule": "B45678/S2345",
+      "cls": "never settles",
+      "transient": -1,
+      "period": -1,
+      "density": 0.5296249389648438,
+      "activity": 0.42316436767578125,
+      "lam": 0.728515625
+    },
+    "serviettes": {
+      "rule": "B234/S",
+      "cls": "never settles",
+      "transient": -1,
+      "period": -1,
+      "density": 0.3720703125,
+      "activity": 0.7439231872558594,
+      "lam": 0.30078125
+    },
+    "gnarl": {
+      "rule": "B1/S1",
+      "cls": "never settles",
+      "transient": -1,
+      "period": -1,
+      "density": 0.22901153564453125,
+      "activity": 0.3821258544921875,
+      "lam": 0.03125
+    }
+  },
+  "by_lambda": [
+    {
+      "lo": 0.0,
+      "hi": 0.05,
+      "n": 104,
+      "dies out": 0.15384615384615385,
+      "freezes": 0.4230769230769231,
+      "oscillates": 0.0,
+      "never settles": 0.4230769230769231,
+      "long_lived": 0.0
+    },
+    {
+      "lo": 0.05,
+      "hi": 0.1,
+      "n": 376,
+      "dies out": 0.0851063829787234,
+      "freezes": 0.3723404255319149,
+      "oscillates": 0.023936170212765957,
+      "never settles": 0.5186170212765957,
+      "long_lived": 0.0026595744680851063
+    },
+    {
+      "lo": 0.1,
+      "hi": 0.15000000000000002,
+      "n": 1056,
+      "dies out": 0.08333333333333333,
+      "freezes": 0.2878787878787879,
+      "oscillates": 0.07954545454545454,
+      "never settles": 0.5492424242424242,
+      "long_lived": 0.0
+    },
+    {
+      "lo": 0.15000000000000002,
+      "hi": 0.2,
+      "n": 2330,
+      "dies out": 0.07210300429184549,
+      "freezes": 0.2463519313304721,
+      "oscillates": 0.11502145922746781,
+      "never settles": 0.5665236051502146,
+      "long_lived": 0.006437768240343348
+    },
+    {
+      "lo": 0.2,
+      "hi": 0.25,
+      "n": 3150,
+      "dies out": 0.06,
+      "freezes": 0.20984126984126983,
+      "oscillates": 0.13206349206349208,
+      "never settles": 0.5980952380952381,
+      "long_lived": 0.005714285714285714
+    },
+    {
+      "lo": 0.25,
+      "hi": 0.30000000000000004,
+      "n": 6752,
+      "dies out": 0.035693127962085305,
+      "freezes": 0.17031990521327015,
+      "oscillates": 0.16454383886255924,
+      "never settles": 0.6294431279620853,
+      "long_lived": 0.011404028436018957
+    },
+    {
+      "lo": 0.30000000000000004,
+      "hi": 0.35000000000000003,
+      "n": 9848,
+      "dies out": 0.027416734362307068,
+      "freezes": 0.1525182778229082,
+      "oscillates": 0.1650081234768481,
+      "never settles": 0.6550568643379366,
+      "long_lived": 0.014825345247766044
+    },
+    {
+      "lo": 0.35000000000000003,
+      "hi": 0.4,
+      "n": 11240,
+      "dies out": 0.017793594306049824,
+      "freezes": 0.12117437722419928,
+      "oscillates": 0.17295373665480426,
+      "never settles": 0.6880782918149466,
+      "long_lived": 0.014501779359430604
+    },
+    {
+      "lo": 0.4,
+      "hi": 0.45,
+      "n": 15678,
+      "dies out": 0.013904834800357188,
+      "freezes": 0.09975762214568185,
+      "oscillates": 0.18548284219926012,
+      "never settles": 0.7008547008547008,
+      "long_lived": 0.01562699323893354
+    },
+    {
+      "lo": 0.45,
+      "hi": 0.5,
+      "n": 15002,
+      "dies out": 0.00873216904412745,
+      "freezes": 0.07492334355419278,
+      "oscillates": 0.19657379016131182,
+      "never settles": 0.7197706972403679,
+      "long_lived": 0.019130782562325022
+    },
+    {
+      "lo": 0.5,
+      "hi": 0.55,
+      "n": 15152,
+      "dies out": 0.004619852164730729,
+      "freezes": 0.07068373812038015,
+      "oscillates": 0.18961193241816263,
+      "never settles": 0.7350844772967265,
+      "long_lived": 0.017819429778247096
+    },
+    {
+      "lo": 0.55,
+      "hi": 0.6000000000000001,
+      "n": 15728,
+      "dies out": 0.0013987792472024414,
+      "freezes": 0.0741353001017294,
+      "oscillates": 0.17764496439471006,
+      "never settles": 0.7468209562563581,
+      "long_lived": 0.015450152594099695
+    },
+    {
+      "lo": 0.6000000000000001,
+      "hi": 0.65,
+      "n": 11712,
+      "dies out": 8.538251366120219e-05,
+      "freezes": 0.08572404371584699,
+      "oscillates": 0.1599214480874317,
+      "never settles": 0.7542691256830601,
+      "long_lived": 0.020577185792349725
+    },
+    {
+      "lo": 0.65,
+      "hi": 0.7000000000000001,
+      "n": 9256,
+      "dies out": 0.0,
+      "freezes": 0.10393258426966293,
+      "oscillates": 0.1544943820224719,
+      "never settles": 0.7415730337078652,
+      "long_lived": 0.014693171996542784
+    },
+    {
+      "lo": 0.7000000000000001,
+      "hi": 0.75,
+      "n": 6672,
+      "dies out": 0.0,
+      "freezes": 0.11016187050359712,
+      "oscillates": 0.16591726618705036,
+      "never settles": 0.7239208633093526,
+      "long_lived": 0.010191846522781775
+    },
+    {
+      "lo": 0.75,
+      "hi": 0.8,
+      "n": 3512,
+      "dies out": 0.0,
+      "freezes": 0.13240318906605922,
+      "oscillates": 0.17169703872437359,
+      "never settles": 0.6958997722095672,
+      "long_lived": 0.011674259681093395
+    },
+    {
+      "lo": 0.8,
+      "hi": 0.8500000000000001,
+      "n": 1968,
+      "dies out": 0.0,
+      "freezes": 0.18851626016260162,
+      "oscillates": 0.15497967479674796,
+      "never settles": 0.6565040650406504,
+      "long_lived": 0.0040650406504065045
+    },
+    {
+      "lo": 0.8500000000000001,
+      "hi": 0.9,
+      "n": 1056,
+      "dies out": 0.0,
+      "freezes": 0.1893939393939394,
+      "oscillates": 0.17234848484848486,
+      "never settles": 0.6382575757575758,
+      "long_lived": 0.00946969696969697
+    },
+    {
+      "lo": 0.9,
+      "hi": 0.9500000000000001,
+      "n": 388,
+      "dies out": 0.0,
+      "freezes": 0.22422680412371135,
+      "oscillates": 0.24484536082474226,
+      "never settles": 0.5309278350515464,
+      "long_lived": 0.059278350515463915
+    },
+    {
+      "lo": 0.9500000000000001,
+      "hi": 1.0,
+      "n": 92,
+      "dies out": 0.0,
+      "freezes": 0.31521739130434784,
+      "oscillates": 0.41304347826086957,
+      "never settles": 0.2717391304347826,
+      "long_lived": 0.11956521739130435
+    }
+  ]
+}
