@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lifelab · Game of Life</title>
+<meta name="description" content="An interactive Game of Life and four small experiments: how random worlds die, how special Conway's rule is among 131,072 others, whether Life is critical, and what happens when the clock is imperfect.">
+<meta property="og:title" content="Is the Game of Life special?">
+<meta property="og:description" content="An interactive Game of Life plus four reproducible experiments on Conway's rule and its 131,072 relatives.">
+<meta property="og:image" content="assets/rule_space.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  color-scheme: light;
+  --primary: #2563eb;
+  --accent: #3b82f6;
+  --text: #1f2937;
+  --text-2: #4b5563;
+  --muted: #6b7280;
+  --bg: #ffffff;
+  --bg-2: #f8fafc;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --sim-bg: #0b1220;
+  --sim-cell: #f4f7fb;
+  --sim-trail: #2a78d6;
+  --code-bg: #f1f5f9;
+  --orange: #eb6834;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --text: #f9fafb;
+    --text-2: #d1d5db;
+    --muted: #9ca3af;
+    --bg: #111827;
+    --bg-2: #1f2937;
+    --card: #1f2937;
+    --border: #374151;
+    --code-bg: #0b1220;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --text: #f9fafb;
+  --text-2: #d1d5db;
+  --muted: #9ca3af;
+  --bg: #111827;
+  --bg-2: #1f2937;
+  --card: #1f2937;
+  --border: #374151;
+  --code-bg: #0b1220;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  font-size: 17px;
+}
+a { color: var(--primary); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+:root[data-theme="dark"] a { color: #60a5fa; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) a { color: #60a5fa; } }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+header.top {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 18px 0; border-bottom: 1px solid var(--border);
+}
+.brand { font-weight: 700; letter-spacing: -0.01em; color: var(--text); text-decoration: none; }
+.brand span { color: var(--muted); font-weight: 500; }
+.top-links { display: flex; gap: 14px; align-items: center; font-size: 15px; }
+.top-links a { color: var(--text-2); text-decoration: none; }
+.top-links a:hover { color: var(--primary); }
+.theme-btn {
+  border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 999px;
+  width: 34px; height: 34px; cursor: pointer; font-size: 15px; line-height: 1;
+}
+.hero { padding: 48px 0 20px; }
+.kicker { color: var(--primary); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; font-size: 13px; margin: 0 0 10px; }
+h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.12; letter-spacing: -0.02em; margin: 0 0 16px; }
+.lede { font-size: clamp(17px, 2.2vw, 20px); color: var(--text-2); max-width: 760px; margin: 0; }
+.byline { color: var(--muted); font-size: 15px; margin-top: 14px; }
+
+/* simulator */
+.sim { margin: 28px 0 8px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); overflow: hidden; }
+.sim-stage { background: var(--sim-bg); position: relative; }
+#board { display: block; width: 100%; height: auto; image-rendering: pixelated; touch-action: none; cursor: crosshair; }
+.sim-stats {
+  position: absolute; left: 12px; top: 10px; font: 500 12.5px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #e5e7eb; background: rgba(11, 18, 32, 0.72); padding: 4px 9px; border-radius: 8px; pointer-events: none;
+}
+.controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px 22px; padding: 16px 18px 18px; }
+.ctl { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.ctl label, .ctl .lbl { font-size: 12.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+button.b, select, input[type="text"] {
+  font: inherit; font-size: 14.5px; color: var(--text); background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: 9px; padding: 7px 12px; min-height: 36px;
+}
+button.b { cursor: pointer; font-weight: 500; }
+button.b:hover { border-color: var(--accent); }
+button.b.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+select, input[type="text"] { width: 100%; }
+input[type="text"].bad { border-color: #d03b3b; }
+input[type="range"] { width: 100%; accent-color: var(--primary); }
+.nt { text-transform: none; }
+.val { font-variant-numeric: tabular-nums; color: var(--text-2); font-size: 14px; }
+.hint { font-size: 14px; color: var(--muted); padding: 0 18px 16px; margin: 0; }
+kbd { font: 12px ui-monospace, Menlo, monospace; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; padding: 0 5px; background: var(--bg-2); }
+
+/* findings */
+section.q { padding: 44px 0 10px; border-top: 1px solid var(--border); margin-top: 36px; }
+section.q h2 { font-size: clamp(24px, 3.4vw, 32px); letter-spacing: -0.015em; line-height: 1.2; margin: 0 0 12px; }
+.qnum { color: var(--primary); font-weight: 700; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; }
+section.q p { color: var(--text-2); max-width: 780px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 20px 0; }
+.tile { border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; background: var(--bg-2); }
+.tile .num { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+.tile .cap { font-size: 14px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+figure { margin: 20px 0; }
+figure img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); background: #fcfcfb; display: block; }
+figure.anim img { background: var(--sim-bg); }
+figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+.note { border-left: 3px solid var(--primary); padding: 4px 0 4px 14px; color: var(--text-2); }
+pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; overflow-x: auto; font-size: 14px; line-height: 1.55; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+:not(pre) > code { background: var(--bg-2); border: 1px solid var(--border); border-radius: 5px; padding: 0 5px; font-size: 0.88em; }
+ol.refs { color: var(--text-2); font-size: 15px; padding-left: 20px; }
+ol.refs li { margin-bottom: 8px; }
+footer { border-top: 1px solid var(--border); margin-top: 48px; padding: 24px 0 48px; color: var(--muted); font-size: 15px; }
+@media (max-width: 720px) {
+  .wrap { padding: 0 16px; }
+  .two { grid-template-columns: 1fr; }
+  .top-links .hide-sm { display: none; }
+  .controls { padding: 14px; }
+  .hint { padding: 0 14px 14px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#">lifelab <span>· Game of Life</span></a>
+    <nav class="top-links">
+      <a class="hide-sm" href="#findings">Findings</a>
+      <a class="hide-sm" href="#run">Run it</a>
+      <a href="https://github.com/mindemory/game_of_life">GitHub</a>
+      <button class="theme-btn" id="themeBtn" aria-label="Switch colour theme">◐</button>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <p class="kicker">A small simulation study</p>
+    <h1>Is the Game of Life special?</h1>
+    <p class="lede">Conway's Game of Life is one rule out of 262,144 possible ones. I built a fast simulator and ran
+      four experiments: how random worlds live and die, how Conway's rule compares with its 131,072 relatives, whether
+      Life is "critical" like a sandpile, and what happens when the cells lose their shared clock.</p>
+    <p class="byline">By <a href="https://www.mindemory.io">Mrugank Dake</a> · code and data on
+      <a href="https://github.com/mindemory/game_of_life">GitHub</a></p>
+  </div>
+
+  <div class="sim" id="sim">
+    <div class="sim-stage">
+      <canvas id="board" aria-label="Game of Life board. Click or drag to draw cells."></canvas>
+      <div class="sim-stats" id="stats">gen 0 · pop 0</div>
+    </div>
+    <div class="controls">
+      <div class="ctl">
+        <span class="lbl">Run</span>
+        <div class="row">
+          <button class="b primary" id="playBtn">Pause</button>
+          <button class="b" id="stepBtn">Step</button>
+          <button class="b" id="randBtn">Random</button>
+          <button class="b" id="clearBtn">Clear</button>
+        </div>
+      </div>
+      <div class="ctl">
+        <label for="ruleSel">Rule</label>
+        <div class="row" style="flex-wrap:nowrap">
+          <select id="ruleSel" aria-label="Rule preset"></select>
+          <input type="text" id="ruleTxt" value="B3/S23" aria-label="Custom rule in B/S notation" style="max-width:150px">
+        </div>
+      </div>
+      <div class="ctl">
+        <label for="stampSel">Click to place</label>
+        <select id="stampSel"></select>
+      </div>
+      <div class="ctl">
+        <label for="speed">Speed <span class="val" id="speedVal"></span></label>
+        <input type="range" id="speed" min="1" max="60" value="24">
+      </div>
+      <div class="ctl">
+        <label for="density">Random density <span class="val" id="densityVal"></span></label>
+        <input type="range" id="density" min="5" max="95" value="35">
+      </div>
+      <div class="ctl">
+        <label for="sync">Synchrony <span class="nt">σ</span> <span class="val" id="syncVal"></span></label>
+        <input type="range" id="sync" min="50" max="100" value="100">
+      </div>
+      <div class="ctl">
+        <span class="lbl">Experiment</span>
+        <div class="row">
+          <button class="b" id="flipBtn" title="Flip one random cell near life, like the avalanche experiment">Flip a cell</button>
+          <button class="b" id="edgeBtn" title="Switch between a wrap-around torus and dead edges">Edges: wrap</button>
+        </div>
+      </div>
+    </div>
+    <p class="hint">Draw by clicking or dragging. Keys: <kbd>space</kbd> play/pause, <kbd>n</kbd> step,
+      <kbd>r</kbd> random, <kbd>c</kbd> clear, <kbd>f</kbd> flip a cell. Try lowering synchrony below 0.90 and
+      watch Life stop freezing.</p>
+  </div>
+
+  <div id="findings"></div>
+
+  <section class="q">
+    <div class="qnum">Question 1</div>
+    <h2>How does a random world live and die?</h2>
+    <p>Fill a grid at random and press play. The world churns, then freezes into sparse "ash" made of still
+      lifes and blinkers. Any starting density between 10% and 70% ends at almost the same place, about 3% of
+      cells alive. Bigger worlds take longer to settle.</p>
+    <div class="tiles">
+      <div class="tile"><div class="num" data-k="soup_density">2.9%</div><div class="cap">of cells still alive once a soup settles, for any start from 10% to 70% alive</div></div>
+      <div class="tile"><div class="num" data-k="soup_lifetime">2,280</div><div class="cap">median generations until a 128×128 world settles (4,580 for 256×256)</div></div>
+      <div class="tile"><div class="num" data-k="soup_top">blinker</div><div class="cap">the most common leftover (33%), then block (32%) and beehive (19%)</div></div>
+    </div>
+    <figure><img src="assets/soups.png" alt="Final density against initial density, lifetime against grid size, and a census of objects in the ash." loading="lazy"></figure>
+  </section>
+
+  <section class="q">
+    <div class="qnum">Question 2</div>
+    <h2>How special is Conway's rule?</h2>
+    <p>A Life-like rule says which neighbour counts give birth (B) and which let a cell survive (S). Leaving out rules
+      where empty space flashes on (B0), there are 131,072 of them. I ran every one on the same 64×64 soup for up
+      to 2,000 generations. Most rules either freeze within a few dozen steps or boil forever. Conway's rule is one of
+      a small minority that churns for hundreds of generations and then settles into a sparse, structured world.</p>
+    <div class="tiles">
+      <div class="tile"><div class="num" data-k="rs_never">70%</div><div class="cap">of rules never settle within 2,000 generations</div></div>
+      <div class="tile"><div class="num" data-k="rs_long">1.5%</div><div class="cap">churn for 300+ generations and then settle, as Life does</div></div>
+      <div class="tile"><div class="num" data-k="rs_life">697</div><div class="cap">generations for Conway's rule to settle, longer than 98% of the rules that settle at all</div></div>
+    </div>
+    <figure><img src="assets/rule_space.png" alt="How all rules end, by Langton's lambda, and transient length against lambda with Conway's Life highlighted." loading="lazy"></figure>
+    <p>Changing a single condition usually breaks it. Of the 17 rules one change away, 9 are still changing after
+      4,000 generations (most of them dense and chaotic) and 4 settle within 300 generations. Only 4 churn and then
+      settle into sparse ash the way Life does. One of those is HighLife (adding birth on 6).</p>
+    <figure><img src="assets/life_mutants.png" alt="Conway's Life and the 17 rules that differ from it by one condition, all started from the same soup." loading="lazy"></figure>
+    <figure class="anim"><img src="assets/rule_zoo.gif" alt="Nine Life-like rules running side by side." loading="lazy">
+      <figcaption>Nine named rules from the same family. Each is one row in the survey.</figcaption></figure>
+  </section>
+
+  <section class="q">
+    <div class="qnum">Question 3</div>
+    <h2>Is Life critical?</h2>
+    <p>In 1989 Bak, Chen and Creutz argued that Life organises itself into a critical state, like a sandpile on the
+      verge of avalanching. Flip one cell of a frozen world and the disturbance can be any size. Later work
+      disagreed. I repeated the experiment with about 130,000 avalanches on grids from 64×64 to 512×512.</p>
+    <div class="two">
+      <figure class="anim"><img src="assets/avalanche.gif" alt="An avalanche spreading through a frozen world after one cell is flipped." loading="lazy">
+        <figcaption>One flipped cell (ring), the cells it disturbs (orange) and the scar it leaves.</figcaption></figure>
+      <div>
+        <div class="tiles" style="grid-template-columns:1fr">
+          <div class="tile"><div class="num" data-k="av_b">1.33</div><div class="cap">power-law exponent of avalanche lifetimes (published: 1.38)</div></div>
+          <div class="tile"><div class="num" data-k="av_tc">≈1,860</div><div class="cap">generations: where the lifetime cutoff levels off on a torus (published: 1,905 ± 59)</div></div>
+        </div>
+      </div>
+    </div>
+    <p class="note">Lifetimes do follow a power law, but only up to a cutoff. On a wrap-around grid that cutoff stops
+      growing once the grid is 256 cells wide (about 1,860 generations), so Life has a typical avalanche scale. It
+      is near-critical, not critical, which agrees with Bennett &amp; Bourzutschky (1991) and Blok &amp; Bergersen
+      (1997). With dead edges avalanches leak out, so the cutoff is smaller and still growing at 512×512.</p>
+    <figure><img src="assets/avalanches.png" alt="Avalanche lifetime distributions for four grid sizes and two boundary conditions, with fitted exponents and cutoffs." loading="lazy"></figure>
+  </section>
+
+  <section class="q">
+    <div class="qnum">Question 4</div>
+    <h2>What if the clock is imperfect?</h2>
+    <p>In Conway's Life every cell updates at exactly the same instant. Neurons, cells and people don't share a
+      perfect clock. Here each cell updates with probability σ at every tick. Blok &amp; Bergersen (1999) found a
+      sharp phase transition, and this simulator reproduces it. Below a critical synchrony the world never freezes
+      and turns into a dense, endlessly changing labyrinth. Our critical point sits about 0.005 above theirs, and
+      it moved closer as the runs got longer.</p>
+    <div class="tiles">
+      <div class="tile"><div class="num" data-k="as_sc">0.912</div><div class="cap">critical synchrony σc on 256×256 (published: 0.906–0.908)</div></div>
+      <div class="tile"><div class="num" data-k="as_rho">0.026</div><div class="cap">density of the frozen world just above σc (published: 0.026)</div></div>
+    </div>
+    <figure class="anim"><img src="assets/asynchrony.gif" alt="Side by side: synchronous Life freezing, and Life with an imperfect clock churning as a labyrinth." loading="lazy"></figure>
+    <figure><img src="assets/asynchrony.png" alt="Steady-state density and activity against synchrony for three grid sizes, with snapshots of the phases." loading="lazy"></figure>
+    <p>This ties back to question 3. Ordinary Life (σ = 1) sits just on the frozen side of a real critical point near
+      σ ≈ 0.91, which is a natural explanation for why it looks almost critical without being so.</p>
+  </section>
+
+  <section class="q" id="run">
+    <div class="qnum">Run it yourself</div>
+    <h2>Everything is reproducible</h2>
+    <p>The simulator is a small, tested Python package (<code>lifelab</code>) built on NumPy. Every figure here comes
+      from a script in <code>experiments/</code>, and the saved results are in the repository.</p>
+<pre><code>git clone https://github.com/mindemory/game_of_life.git
+cd game_of_life
+conda env create -f environment.yml   # or: pip install -e ".[viewer]"
+conda activate gameoflife
+
+lifelab play                          # interactive window
+lifelab render --pattern gosper --size 120x70 --steps 300 --out gun.gif
+python experiments/asynchrony.py      # re-run an experiment</code></pre>
+  </section>
+
+  <section class="q">
+    <div class="qnum">References</div>
+    <ol class="refs">
+      <li>M. Gardner (1970). Mathematical Games: The fantastic combinations of John Conway's new solitaire game "life". <i>Scientific American</i> 223(4), 120–123.</li>
+      <li>P. Bak, K. Chen &amp; M. Creutz (1989). Self-organized criticality in the "Game of Life". <i>Nature</i> 342, 780–782.</li>
+      <li>C. Bennett &amp; M. S. Bourzutschky (1991). "Life" not critical? <i>Nature</i> 350, 468.</li>
+      <li>F. Bagnoli, R. Rechtman &amp; S. Ruffo (1991). Some facts of life. <i>Physica A</i> 171, 249–264.</li>
+      <li>H. J. Blok &amp; B. Bergersen (1997). Effect of boundary conditions on scaling in the "game of Life". <i>Physical Review E</i> 55, 6249.</li>
+      <li>H. J. Blok &amp; B. Bergersen (1999). Synchronous versus asynchronous updating in the "game of Life". <i>Physical Review E</i> 59, 3876.</li>
+      <li>C. G. Langton (1990). Computation at the edge of chaos. <i>Physica D</i> 42, 12–37.</li>
+      <li>D. Eppstein (2010). Growth and decay in Life-like cellular automata. In <i>Game of Life Cellular Automata</i> (A. Adamatzky, ed.), Springer, 71–98.</li>
+      <li>N. Fatès (2010). Does Life resist asynchrony? In <i>Game of Life Cellular Automata</i> (A. Adamatzky, ed.), Springer, 257–274.</li>
+    </ol>
+  </section>
+
+  <footer>
+    Built by <a href="https://www.mindemory.io">Mrugank Dake</a>. Source, data and figures:
+    <a href="https://github.com/mindemory/game_of_life">github.com/mindemory/game_of_life</a> (MIT licence).
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ------------------------------------------------------------- theme
+  var root = document.documentElement;
+  try {
+    var saved = localStorage.getItem("lifelab-theme");
+    if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved);
+  } catch (e) { /* storage unavailable */ }
+  document.getElementById("themeBtn").addEventListener("click", function () {
+    var dark = root.getAttribute("data-theme") === "dark" ||
+      (!root.getAttribute("data-theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    var next = dark ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("lifelab-theme", next); } catch (e) { /* ignore */ }
+  });
+
+  // ------------------------------------------------------------- rules & patterns
+  var RULES = [
+    ["Conway's Life", "B3/S23"], ["HighLife", "B36/S23"], ["Day & Night", "B3678/S34678"],
+    ["Seeds", "B2/S"], ["Maze", "B3/S12345"], ["Coral", "B3/S45678"], ["Replicator", "B1357/S1357"],
+    ["2x2", "B36/S125"], ["Diamoeba", "B35678/S5678"], ["Move", "B368/S245"], ["DryLife", "B37/S23"],
+    ["Life without death", "B3/S012345678"], ["Custom…", ""]
+  ];
+  var PATTERNS = {
+    "Draw cells": null,
+    "Glider": ".O.\n..O\nOOO",
+    "Lightweight spaceship": ".O..O\nO....\nO...O\nOOOO.",
+    "R-pentomino": ".OO\nOO.\n.O.",
+    "Acorn": ".O.....\n...O...\nOO..OOO",
+    "Diehard": "......O.\nOO......\n.O...OOO",
+    "Pulsar": "..OOO...OOO..\n.............\nO....O.O....O\nO....O.O....O\nO....O.O....O\n..OOO...OOO..\n.............\n..OOO...OOO..\nO....O.O....O\nO....O.O....O\nO....O.O....O\n.............\n..OOO...OOO..",
+    "Pentadecathlon": "..O....O..\nOO.OOOO.OO\n..O....O..",
+    "Gosper glider gun": "........................O...........\n......................O.O...........\n............OO......OO............OO\n...........O...O....OO............OO\nOO........O.....O...OO..............\nOO........O...O.OO....O.O...........\n..........O.....O.......O...........\n...........O...O....................\n............OO......................"
+  };
+
+  function parseRule(text) {
+    var m = /^\s*B([0-8]*)\s*\/\s*S([0-8]*)\s*$/i.exec(text);
+    if (!m) return null;
+    var b = 0, s = 0, i;
+    for (i = 0; i < m[1].length; i++) b |= 1 << +m[1][i];
+    for (i = 0; i < m[2].length; i++) s |= 1 << +m[2][i];
+    return { birth: b, survive: s, text: text.toUpperCase().replace(/\s+/g, "") };
+  }
+
+  // ------------------------------------------------------------- state
+  var canvas = document.getElementById("board");
+  var ctx = canvas.getContext("2d");
+  var off = document.createElement("canvas");
+  var offCtx = off.getContext("2d");
+  var S = {
+    W: 0, H: 0, cell: 5, grid: null, next: null, heat: null, rule: parseRule("B3/S23"),
+    wrap: true, sync: 1, playing: true, gen: 0, fps: 24, density: 0.35, ring: null
+  };
+  var img = null;
+
+  function sizeBoard() {
+    var width = canvas.parentElement.clientWidth || 800;
+    var cell = width < 520 ? 4 : 5;
+    var W = Math.max(60, Math.floor(width / cell));
+    var H = Math.round(W * (width < 520 ? 0.9 : 0.5));
+    if (W === S.W && H === S.H) return;
+    S.W = W; S.H = H; S.cell = cell;
+    S.grid = new Uint8Array(W * H); S.next = new Uint8Array(W * H); S.heat = new Float32Array(W * H);
+    off.width = W; off.height = H; img = offCtx.createImageData(W, H);
+    canvas.width = W * cell; canvas.height = H * cell;
+    randomize();
+  }
+
+  function randomize() {
+    for (var i = 0; i < S.grid.length; i++) S.grid[i] = Math.random() < S.density ? 1 : 0;
+    S.heat.fill(0); S.gen = 0;
+  }
+
+  function step() {
+    var W = S.W, H = S.H, g = S.grid, n = S.next, wrap = S.wrap, sync = S.sync;
+    var B = S.rule.birth, Sv = S.rule.survive;
+    for (var y = 0; y < H; y++) {
+      var yu = y - 1, yd = y + 1, hasU = true, hasD = true;
+      if (yu < 0) { if (wrap) yu = H - 1; else hasU = false; }
+      if (yd >= H) { if (wrap) yd = 0; else hasD = false; }
+      var rU = yu * W, r = y * W, rD = yd * W;
+      for (var x = 0; x < W; x++) {
+        var xl = x - 1, xr = x + 1, hasL = true, hasR = true;
+        if (xl < 0) { if (wrap) xl = W - 1; else hasL = false; }
+        if (xr >= W) { if (wrap) xr = 0; else hasR = false; }
+        var c = 0;
+        if (hasU) { c += g[rU + x]; if (hasL) c += g[rU + xl]; if (hasR) c += g[rU + xr]; }
+        if (hasD) { c += g[rD + x]; if (hasL) c += g[rD + xl]; if (hasR) c += g[rD + xr]; }
+        if (hasL) c += g[r + xl];
+        if (hasR) c += g[r + xr];
+        var alive = g[r + x];
+        var nv = alive ? (Sv >> c) & 1 : (B >> c) & 1;
+        if (sync < 1 && Math.random() >= sync) nv = alive;
+        n[r + x] = nv;
+      }
+    }
+    S.grid = n; S.next = g; S.gen++;
+  }
+
+  function hexToRgb(h) {
+    h = h.trim().replace("#", "");
+    return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+  }
+
+  function draw() {
+    var cs = getComputedStyle(root);
+    var bg = hexToRgb(cs.getPropertyValue("--sim-bg") || "#0b1220");
+    var fg = hexToRgb(cs.getPropertyValue("--sim-cell") || "#f4f7fb");
+    var tr = hexToRgb(cs.getPropertyValue("--sim-trail") || "#2a78d6");
+    var d = img.data, g = S.grid, h = S.heat, pop = 0;
+    for (var i = 0, j = 0; i < g.length; i++, j += 4) {
+      if (g[i]) { h[i] = 1; pop++; d[j] = fg[0]; d[j + 1] = fg[1]; d[j + 2] = fg[2]; }
+      else {
+        var k = h[i] = h[i] * 0.78;
+        var t = k < 0.02 ? 0 : Math.pow(k, 1.3) * 0.85;
+        d[j] = bg[0] + (tr[0] - bg[0]) * t; d[j + 1] = bg[1] + (tr[1] - bg[1]) * t; d[j + 2] = bg[2] + (tr[2] - bg[2]) * t;
+      }
+      d[j + 3] = 255;
+    }
+    offCtx.putImageData(img, 0, 0);
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(off, 0, 0, canvas.width, canvas.height);
+    if (S.ring && S.ring.t > 0) {
+      ctx.strokeStyle = "#eb6834"; ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc((S.ring.x + 0.5) * S.cell, (S.ring.y + 0.5) * S.cell, 10 + (30 - S.ring.t) * 0.6, 0, Math.PI * 2);
+      ctx.stroke();
+      S.ring.t--;
+    }
+    document.getElementById("stats").textContent =
+      "gen " + S.gen + " · pop " + pop + " · " + (100 * pop / g.length).toFixed(1) + "% · " + S.rule.text +
+      (S.sync < 1 ? " · σ " + S.sync.toFixed(2) : "");
+  }
+
+  // ------------------------------------------------------------- input
+  var drawing = null;
+  function cellAt(ev) {
+    var rect = canvas.getBoundingClientRect();
+    var x = Math.floor((ev.clientX - rect.left) / rect.width * S.W);
+    var y = Math.floor((ev.clientY - rect.top) / rect.height * S.H);
+    return [Math.min(S.W - 1, Math.max(0, x)), Math.min(S.H - 1, Math.max(0, y))];
+  }
+  function stamp(cx, cy, text) {
+    var rows = text.split("\n"), h = rows.length, w = rows[0].length;
+    for (var r = 0; r < h; r++) for (var c = 0; c < rows[r].length; c++) {
+      if (rows[r][c] !== "O") continue;
+      var x = cx - (w >> 1) + c, y = cy - (h >> 1) + r;
+      if (S.wrap) { x = (x + S.W) % S.W; y = (y + S.H) % S.H; }
+      else if (x < 0 || y < 0 || x >= S.W || y >= S.H) continue;
+      S.grid[y * S.W + x] = 1;
+    }
+  }
+  canvas.addEventListener("pointerdown", function (ev) {
+    var p = cellAt(ev), pat = PATTERNS[document.getElementById("stampSel").value];
+    if (pat) { stamp(p[0], p[1], pat); draw(); return; }
+    canvas.setPointerCapture(ev.pointerId);
+    drawing = S.grid[p[1] * S.W + p[0]] ? 0 : 1;
+    S.grid[p[1] * S.W + p[0]] = drawing; draw();
+  });
+  canvas.addEventListener("pointermove", function (ev) {
+    if (drawing === null) return;
+    var p = cellAt(ev); S.grid[p[1] * S.W + p[0]] = drawing; if (!S.playing) draw();
+  });
+  ["pointerup", "pointercancel"].forEach(function (t) { canvas.addEventListener(t, function () { drawing = null; }); });
+
+  function flipCell() {
+    var cand = [], W = S.W, H = S.H, g = S.grid;
+    for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
+      var near = g[y * W + x];
+      for (var dy = -1; dy <= 1 && !near; dy++) for (var dx = -1; dx <= 1 && !near; dx++) {
+        var yy = (y + dy + H) % H, xx = (x + dx + W) % W;
+        near = g[yy * W + xx];
+      }
+      if (near) cand.push(y * W + x);
+    }
+    if (!cand.length) return;
+    var i = cand[Math.floor(Math.random() * cand.length)];
+    g[i] ^= 1; S.ring = { x: i % W, y: Math.floor(i / W), t: 30 };
+    draw();
+  }
+
+  // ------------------------------------------------------------- controls
+  var ruleSel = document.getElementById("ruleSel"), ruleTxt = document.getElementById("ruleTxt");
+  RULES.forEach(function (r) {
+    var o = document.createElement("option"); o.value = r[1]; o.textContent = r[0] + (r[1] ? "  " + r[1] : "");
+    ruleSel.appendChild(o);
+  });
+  ruleSel.addEventListener("change", function () {
+    if (!ruleSel.value) { ruleTxt.focus(); return; }
+    ruleTxt.value = ruleSel.value; ruleTxt.classList.remove("bad"); S.rule = parseRule(ruleSel.value);
+  });
+  ruleTxt.addEventListener("input", function () {
+    var r = parseRule(ruleTxt.value);
+    ruleTxt.classList.toggle("bad", !r);
+    if (r) {
+      S.rule = r;
+      var match = RULES.filter(function (x) { return parseRule(x[1] || "B/S") && x[1].toUpperCase() === r.text; })[0];
+      ruleSel.value = match ? match[1] : "";
+    }
+  });
+  var stampSel = document.getElementById("stampSel");
+  Object.keys(PATTERNS).forEach(function (k) {
+    var o = document.createElement("option"); o.value = k; o.textContent = k; stampSel.appendChild(o);
+  });
+  var playBtn = document.getElementById("playBtn");
+  function setPlaying(p) { S.playing = p; playBtn.textContent = p ? "Pause" : "Play"; }
+  playBtn.addEventListener("click", function () { setPlaying(!S.playing); });
+  document.getElementById("stepBtn").addEventListener("click", function () { setPlaying(false); step(); draw(); });
+  document.getElementById("randBtn").addEventListener("click", function () { randomize(); draw(); });
+  document.getElementById("clearBtn").addEventListener("click", function () { S.grid.fill(0); S.heat.fill(0); S.gen = 0; draw(); });
+  document.getElementById("flipBtn").addEventListener("click", flipCell);
+  var edgeBtn = document.getElementById("edgeBtn");
+  edgeBtn.addEventListener("click", function () { S.wrap = !S.wrap; edgeBtn.textContent = "Edges: " + (S.wrap ? "wrap" : "dead"); });
+  function bindRange(id, valId, fmt, apply) {
+    var el = document.getElementById(id), out = document.getElementById(valId);
+    function upd() { apply(+el.value); out.textContent = fmt(+el.value); }
+    el.addEventListener("input", upd); upd();
+  }
+  bindRange("speed", "speedVal", function (v) { return v + " gen/s"; }, function (v) { S.fps = v; });
+  bindRange("density", "densityVal", function (v) { return v + "%"; }, function (v) { S.density = v / 100; });
+  bindRange("sync", "syncVal", function (v) { return (v / 100).toFixed(2); }, function (v) { S.sync = v / 100; });
+  document.addEventListener("keydown", function (ev) {
+    if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
+    if (ev.key === " ") { ev.preventDefault(); setPlaying(!S.playing); }
+    else if (ev.key === "n") { setPlaying(false); step(); draw(); }
+    else if (ev.key === "r") { randomize(); draw(); }
+    else if (ev.key === "c") { S.grid.fill(0); S.gen = 0; draw(); }
+    else if (ev.key === "f") flipCell();
+  });
+
+  // ------------------------------------------------------------- loop
+  var last = 0, acc = 0, visible = true;
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(canvas);
+  }
+  function loop(t) {
+    var dt = Math.min(250, t - last); last = t;
+    if (S.playing && visible) {
+      acc += dt;
+      var interval = 1000 / S.fps, steps = 0;
+      while (acc >= interval && steps < 4) { step(); acc -= interval; steps++; }
+      if (steps) draw();
+    }
+    requestAnimationFrame(loop);
+  }
+  sizeBoard(); draw();
+  window.addEventListener("resize", function () { var w = S.W; sizeBoard(); if (w !== S.W) draw(); });
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
